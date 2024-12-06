@@ -1,27 +1,54 @@
+let body = document.querySelector("body")
 let id = document.createElement("input")
 let labelId = document.createElement("label")
 let name = document.createElement("input")
 let labelName = document.createElement("label")
 let quantity = document.createElement("input")
 let labelQuantity = document.createElement("label")
+let inputSelect = document.createElement("input")
+let labelSelectInput = document.createElement("label")
+
 let buttonInput = document.createElement("button")
 let buttonDeleteLS = document.createElement("button")
 let buttonDelete = document.createElement("button")
 let buttonEdit = document.createElement("button")
 let buttonTestTable = document.createElement("button")
+let buttonSelect = document.createElement("button")
+
+let headerSelect = document.createElement("h4")
 let info = document.createElement("h3")
+
 let buttonDiv = document.createElement("div")
 let selectButtonDiv = document.createElement("div")
-let headerSelect = document.createElement("h4")
-let form = document.createElement("form")
 let mainDiv = document.createElement("div")
 let selectDiv = document.createElement("div")
-let body = document.querySelector("body")
+
+let form = document.createElement("form")
 let formSelect = document.createAttribute("form")
-let labelSelectInput = document.createElement("label")
-let inputSelect = document.createElement("input")
-let buttonSelect = document.createElement("button")
+
 let tableSelect 
+
+//-------------------------------------------------------------
+let buttonXCode = document.createElement("button")
+let buttonXName = document.createElement("button")
+let buttonXQuantity = document.createElement("button")
+
+let inputCodeDiv = document.createElement("div")
+let inputNameDiv = document.createElement("div")
+let inputQuantityDiv = document.createElement("div")
+
+inputCodeDiv.style.display = "flex"
+inputNameDiv.style.display = "flex"
+inputQuantityDiv.style.display = "flex"
+
+buttonXCode.textContent = "X"
+buttonXName.textContent = "X"
+buttonXQuantity.textContent = "X" 
+
+buttonXCode.style.marginRight = "5px"
+buttonXName.style.marginRight = "5px"
+buttonXQuantity.style.marginRight = "5px"
+//-------------------------------------------------------------
 
 const rootDiv = document.getElementById("root")
 
@@ -37,8 +64,6 @@ inputSelect.setAttribute("id","inputSelect")
 inputSelect.setAttribute("type","number")
 inputSelect.setAttribute("placeholder","only numbers..")
 
-
-
 info.style.height = "30px"
 headerSelect.textContent = "Find product by code"
 body.style.minHeight = "100vh"
@@ -46,6 +71,10 @@ body.style.margin = "0"
 body.style.background = "linear-gradient(165deg, rgba(164,221,246,1) 0%, rgba(232,97,82,0.8) 100%)"
 body.style.backgroundRepeat = "no-repeat"
 body.style.backgroundSize = "cover"
+
+id.style.flexGrow = "1"
+name.style.flexGrow = "1"
+quantity.style.flexGrow = "1"
 
 id.setAttribute("id","id")
 id.setAttribute("type","number")
@@ -79,18 +108,25 @@ buttonDiv.appendChild(buttonTestTable)
 
 selectButtonDiv.appendChild(buttonSelect)
 
-
+//----------------------------------------------------------
+inputCodeDiv.append(buttonXCode, id)
+inputNameDiv.append(buttonXName, name)
+inputQuantityDiv.append(buttonXQuantity, quantity)
 
 mainDiv.style.display = "flex"
 mainDiv.style.flexDirection = "column"
 mainDiv.style.width = "600px"
 mainDiv.style.marginTop = "50px"
 mainDiv.appendChild(labelId)
-mainDiv.appendChild(id)
+// mainDiv.appendChild(buttonXCode)
+// mainDiv.appendChild(id)
+mainDiv.appendChild(inputCodeDiv)
 mainDiv.appendChild(labelName)
-mainDiv.appendChild(name)
+mainDiv.appendChild(inputNameDiv)
+// mainDiv.appendChild(name)
 mainDiv.appendChild(labelQuantity)
-mainDiv.appendChild(quantity)
+mainDiv.appendChild(inputQuantityDiv)
+// mainDiv.appendChild(quantity)
 mainDiv.appendChild(buttonDiv)
 mainDiv.appendChild(info)
 
@@ -174,6 +210,38 @@ function createTable() {
         return table
 }
 
+function addRowToTable(id,code,name,quantity,setId) {
+        let tr = document.createElement("tr")
+        let tdId = document.createElement("td")
+        let tdCode = document.createElement("td")
+        let tdName = document.createElement("td")
+        let tdQuantity = document.createElement("td")
+        if (setId != -1) {
+                tr.setAttribute("id",`${setId}`)
+        }
+        tdId.style.borderBottom = "1px solid black"
+        tdId.style.borderRight = "1px solid black"
+        tdCode.style.borderBottom = "1px solid black"
+        tdCode.style.borderRight = "1px solid black"
+        tdName.style.borderBottom = "1px solid black"
+        tdName.style.borderRight = "1px solid black"
+        tdQuantity.style.borderBottom = "1px solid black"
+        tdId.style.padding = "4px"
+        tdCode.style.padding = "4px"
+        tdName.style.padding = "4px"
+        tdQuantity.style.padding = "4px"
+        tdId.textContent = id
+        tdCode.textContent = code
+        tdName.textContent = name
+        tdQuantity.textContent = quantity
+        tr.appendChild(tdId)
+        tr.appendChild(tdCode)
+        tr.appendChild(tdName)
+        tr.appendChild(tdQuantity)
+        return tr
+}
+
+
 function drawTable() {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         let table = document.querySelector("#mainTable")
@@ -183,30 +251,31 @@ function drawTable() {
         table = createTable()
         table.setAttribute("id","mainTable")
         for (let prekeId in prekes) {
-                let tr = document.createElement("tr")
-                let tdId = document.createElement("td")
-                let tdCode = document.createElement("td")
-                let tdName = document.createElement("td")
-                let tdQuantity = document.createElement("td")
-                tdId.style.borderBottom = "1px solid black"
-                tdId.style.borderRight = "1px solid black"
-                tdCode.style.borderBottom = "1px solid black"
-                tdCode.style.borderRight = "1px solid black"
-                tdName.style.borderBottom = "1px solid black"
-                tdName.style.borderRight = "1px solid black"
-                tdQuantity.style.borderBottom = "1px solid black"
-                tdId.style.padding = "4px"
-                tdCode.style.padding = "4px"
-                tdName.style.padding = "4px"
-                tdQuantity.style.padding = "4px"
-                tdId.textContent = +prekeId+1
-                tdCode.textContent = prekes[prekeId].id
-                tdName.textContent = prekes[prekeId].name
-                tdQuantity.textContent = prekes[prekeId].quantity
-                tr.appendChild(tdId)
-                tr.appendChild(tdCode)
-                tr.appendChild(tdName)
-                tr.appendChild(tdQuantity)
+                let tr = addRowToTable(+prekeId+1,prekes[prekeId].id,prekes[prekeId].name,prekes[prekeId].quantity,-1)
+                // let tr = document.createElement("tr")
+                // let tdId = document.createElement("td")
+                // let tdCode = document.createElement("td")
+                // let tdName = document.createElement("td")
+                // let tdQuantity = document.createElement("td")
+                // tdId.style.borderBottom = "1px solid black"
+                // tdId.style.borderRight = "1px solid black"
+                // tdCode.style.borderBottom = "1px solid black"
+                // tdCode.style.borderRight = "1px solid black"
+                // tdName.style.borderBottom = "1px solid black"
+                // tdName.style.borderRight = "1px solid black"
+                // tdQuantity.style.borderBottom = "1px solid black"
+                // tdId.style.padding = "4px"
+                // tdCode.style.padding = "4px"
+                // tdName.style.padding = "4px"
+                // tdQuantity.style.padding = "4px"
+                // tdId.textContent = +prekeId+1
+                // tdCode.textContent = prekes[prekeId].id
+                // tdName.textContent = prekes[prekeId].name
+                // tdQuantity.textContent = prekes[prekeId].quantity
+                // tr.appendChild(tdId)
+                // tr.appendChild(tdCode)
+                // tr.appendChild(tdName)
+                // tr.appendChild(tdQuantity)
                 table.appendChild(tr)
                 form.appendChild(table)
         }
@@ -218,39 +287,28 @@ function createTableSelect() {
         if (!tableSelect) {
                 tableSelect = createTable()
                 tableSelect.setAttribute("id","tableSelect")
-                tableSelect.style.marginTop = "86px"
+                tableSelect.style.marginTop = "84px"
                 tableSelect.style.marginBottom = "50px"
         }   
         const prekes = JSON.parse(localStorage.getItem("prekes"))
-        for (let prekeId in prekes) {
-                if (+inputSelect.value-1 == prekeId && !document.getElementById(`${prekes[prekeId].id}`)) {
-                        let tr = document.createElement("tr")
-                        tr.setAttribute("id",`${prekes[prekeId].id}`)
-                        let tdId = document.createElement("td")
-                        let tdCode = document.createElement("td")
-                        let tdName = document.createElement("td")
-                        let tdQuantity = document.createElement("td")
-                        tdId.style.borderBottom = "1px solid black"
-                        tdId.style.borderRight = "1px solid black"
-                        tdCode.style.borderBottom = "1px solid black"
-                        tdCode.style.borderRight = "1px solid black"
-                        tdName.style.borderBottom = "1px solid black"
-                        tdName.style.borderRight = "1px solid black"
-                        tdQuantity.style.borderBottom = "1px solid black"
-                        tdId.style.padding = "4px"
-                        tdCode.style.padding = "4px"
-                        tdName.style.padding = "4px"
-                        tdQuantity.style.padding = "4px"
-                        tdCode.textContent = prekes[prekeId].id
-                        tdName.textContent = prekes[prekeId].name
-                        tdQuantity.textContent = prekes[prekeId].quantity
-                        tr.appendChild(tdId)
-                        tr.appendChild(tdCode)
-                        tr.appendChild(tdName)
-                        tr.appendChild(tdQuantity)
+        // for (let prekeId in prekes) {
+                // if (+inputSelect.value-1 == prekeId && !document.getElementById(`${prekes[prekeId].id}`)) {
+                        if (!document.getElementById(`${prekes[+inputSelect.value-1].id}`)) {
+                        let tr = addRowToTable("",
+                                                prekes[+inputSelect.value-1].id,
+                                                prekes[+inputSelect.value-1].name,
+                                                prekes[+inputSelect.value-1].quantity,
+                                                prekes[+inputSelect.value-1].id,)
                         tableSelect.appendChild(tr)
-                }
-        }
+                        info.textContent = `Prideta ${+inputSelect.value-1} eilute`
+                        }
+                        else if (document.getElementById(`${prekes[+inputSelect.value-1].id}`)) {
+                                info.textContent = "Toks produktas jau yra pridetas"
+                        }
+                        else {
+                                info.textContent = "Tokio id nera"
+                        }
+
 }
 
 
@@ -268,10 +326,12 @@ function deleteSelect() {
                         tableSelect.removeChild(tableSelect.childNodes[i])
                 }
         }
-        drawTableSelect()
+        // drawTableSelect()
+        updateTableSelect()
 }
 
 function updateTableSelect() {
+        tableSelect.remove()
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         for (let i = 1; i < tableSelect.rows.length; i++) {
                 for (let preke of prekes){
@@ -323,15 +383,24 @@ buttonEdit.addEventListener("click", () => {
         }    
         localStorage.setItem("prekes",JSON.stringify(prekes))
         drawTable()
-        drawTableSelect()
+        // drawTableSelect()
+        updateTableSelect()
 })
 
 buttonDeleteLS.addEventListener("click", () => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
-        deleteSelect()
-        prekes.splice(+id.value-1,1)
-        localStorage.setItem("prekes",JSON.stringify(prekes))
-        drawTable()
+        tableSelect = document.getElementById("tableSelect")
+        if (tableSelect) {
+                deleteSelect()
+                prekes.splice(+id.value-1,1)
+                localStorage.setItem("prekes",JSON.stringify(prekes))
+                drawTable()        
+        }   
+        else {
+                prekes.splice(+id.value-1,1)
+                localStorage.setItem("prekes",JSON.stringify(prekes))
+                drawTable()
+        }
 })
 
 buttonDelete.addEventListener("click", () => {
@@ -350,6 +419,21 @@ buttonTestTable.addEventListener("click", ()=> {
         drawTable()
 })
 
+buttonXCode.addEventListener("click", ()=> {
+        id.value = ''
+        id.focus()
+})
+
+buttonXName.addEventListener("click", ()=> {
+        name.value = ''
+        name.focus()
+})
+
+buttonXQuantity.addEventListener("click", ()=> {
+        quantity.value = ''
+        quantity.focus()
+})
+
 
 
 buttonSelect.addEventListener("click",() => {
@@ -357,7 +441,7 @@ buttonSelect.addEventListener("click",() => {
         for (let prekeId in prekes) {
                 if (+inputSelect.value-1 == prekeId) {
                         createTableSelect(prekeId)
-                        drawTableSelect()
+                        updateTableSelect()
                 }
         }
         inputSelect.value = ''
