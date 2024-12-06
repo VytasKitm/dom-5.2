@@ -300,15 +300,10 @@ function createTableSelect() {
                                                 prekes[+inputSelect.value-1].quantity,
                                                 prekes[+inputSelect.value-1].id,)
                         tableSelect.appendChild(tr)
-                        info.textContent = `Prideta ${+inputSelect.value-1} eilute`
                         }
                         else if (document.getElementById(`${prekes[+inputSelect.value-1].id}`)) {
                                 info.textContent = "Toks produktas jau yra pridetas"
                         }
-                        else {
-                                info.textContent = "Tokio id nera"
-                        }
-
 }
 
 
@@ -351,8 +346,14 @@ const prekes = localStorage.getItem("prekes") == null ? localStorage.setItem("pr
 buttonInput.addEventListener("click", () => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
 
-        if (id.value == '' || name.value == '' || quantity.value == '') {
-                info.textContent = "Butina uzpildyti visus laukus"
+        if (id.value == '') {
+                info.textContent = "Butina ivesti prekes koda"
+        }
+        else if (name.value == '') {
+                info.textContent = "Iveskite prekes pavadinima"
+        }
+        else if ( quantity.value == '') {
+                info.textContent = "Iveskite prekes kieki"
         }
         else if (prekes.some(el => el.id === id.value)){
                 info.textContent = "Toks prekes kodas jau yra"
@@ -383,8 +384,9 @@ buttonEdit.addEventListener("click", () => {
         }    
         localStorage.setItem("prekes",JSON.stringify(prekes))
         drawTable()
-        // drawTableSelect()
-        updateTableSelect()
+        if (tableSelect) {
+                updateTableSelect()
+        }
 })
 
 buttonDeleteLS.addEventListener("click", () => {
@@ -410,12 +412,14 @@ buttonDelete.addEventListener("click", () => {
         if (table) {
                 table.remove()
         }
+        info.textContent = ""
 })
 
 buttonTestTable.addEventListener("click", ()=> {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         prekes.push(...testLentele)
         localStorage.setItem("prekes",JSON.stringify(prekes))
+        info.textContent = ""
         drawTable()
 })
 
