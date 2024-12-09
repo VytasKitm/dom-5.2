@@ -23,6 +23,10 @@ let selectButtonDiv = document.createElement("div")
 let mainDiv = document.createElement("div")
 let selectDiv = document.createElement("div")
 
+// let inputForm = document.createElement("form")
+// let nameForm = document.createElement("form")
+// let quantityForm = document.createElement("form")
+
 let form = document.createElement("form")
 let formSelect = document.createAttribute("form")
 
@@ -72,6 +76,10 @@ body.style.background = "linear-gradient(165deg, rgba(164,221,246,1) 0%, rgba(23
 body.style.backgroundRepeat = "no-repeat"
 body.style.backgroundSize = "cover"
 
+// inputForm.style.width = "100%"
+// nameForm.style.width = "100%"
+// quantityForm.style.width = "100%"
+
 id.style.flexGrow = "1"
 name.style.flexGrow = "1"
 quantity.style.flexGrow = "1"
@@ -82,6 +90,7 @@ name.setAttribute("id","name")
 name.setAttribute("type","text")
 quantity.setAttribute("id","quantity")
 quantity.setAttribute("type","number")
+quantity.setAttribute("placeholder","only numbers..")
 buttonInput.setAttribute("id","buttonInput")
 
 labelId.setAttribute("for","id")
@@ -99,6 +108,7 @@ buttonDiv.style.marginTop = "20px"
 selectButtonDiv.style.display = "flex"
 selectButtonDiv.style.justifyContent = "center"
 selectButtonDiv.style.marginTop = "20px"
+selectButtonDiv.style.marginBottom = "20px"
 
 buttonDiv.appendChild(buttonInput)
 buttonDiv.appendChild(buttonEdit)
@@ -109,6 +119,10 @@ buttonDiv.appendChild(buttonTestTable)
 selectButtonDiv.appendChild(buttonSelect)
 
 //----------------------------------------------------------
+// inputForm.append(id)
+// nameForm.append(name)
+// quantityForm.append(quantity)
+
 inputCodeDiv.append(buttonXCode, id)
 inputNameDiv.append(buttonXName, name)
 inputQuantityDiv.append(buttonXQuantity, quantity)
@@ -118,15 +132,11 @@ mainDiv.style.flexDirection = "column"
 mainDiv.style.width = "600px"
 mainDiv.style.marginTop = "50px"
 mainDiv.appendChild(labelId)
-// mainDiv.appendChild(buttonXCode)
-// mainDiv.appendChild(id)
 mainDiv.appendChild(inputCodeDiv)
 mainDiv.appendChild(labelName)
 mainDiv.appendChild(inputNameDiv)
-// mainDiv.appendChild(name)
 mainDiv.appendChild(labelQuantity)
 mainDiv.appendChild(inputQuantityDiv)
-// mainDiv.appendChild(quantity)
 mainDiv.appendChild(buttonDiv)
 mainDiv.appendChild(info)
 
@@ -251,38 +261,19 @@ function drawTable() {
         table = createTable()
         table.setAttribute("id","mainTable")
         for (let prekeId in prekes) {
-                let tr = addRowToTable(+prekeId+1,prekes[prekeId].id,prekes[prekeId].name,prekes[prekeId].quantity,-1)
-                // let tr = document.createElement("tr")
-                // let tdId = document.createElement("td")
-                // let tdCode = document.createElement("td")
-                // let tdName = document.createElement("td")
-                // let tdQuantity = document.createElement("td")
-                // tdId.style.borderBottom = "1px solid black"
-                // tdId.style.borderRight = "1px solid black"
-                // tdCode.style.borderBottom = "1px solid black"
-                // tdCode.style.borderRight = "1px solid black"
-                // tdName.style.borderBottom = "1px solid black"
-                // tdName.style.borderRight = "1px solid black"
-                // tdQuantity.style.borderBottom = "1px solid black"
-                // tdId.style.padding = "4px"
-                // tdCode.style.padding = "4px"
-                // tdName.style.padding = "4px"
-                // tdQuantity.style.padding = "4px"
-                // tdId.textContent = +prekeId+1
-                // tdCode.textContent = prekes[prekeId].id
-                // tdName.textContent = prekes[prekeId].name
-                // tdQuantity.textContent = prekes[prekeId].quantity
-                // tr.appendChild(tdId)
-                // tr.appendChild(tdCode)
-                // tr.appendChild(tdName)
-                // tr.appendChild(tdQuantity)
+                let tr = addRowToTable(+prekeId+1,
+                                        prekes[prekeId].id,
+                                        prekes[prekeId].name,
+                                        prekes[prekeId].quantity,
+                                        -1)
                 table.appendChild(tr)
                 form.appendChild(table)
         }
         mainDiv.appendChild(form)
 }
 
-function createTableSelect() {
+
+function drawTableSelect() {
         tableSelect = document.getElementById("tableSelect")
         if (!tableSelect) {
                 tableSelect = createTable()
@@ -291,8 +282,6 @@ function createTableSelect() {
                 tableSelect.style.marginBottom = "50px"
         }   
         const prekes = JSON.parse(localStorage.getItem("prekes"))
-        // for (let prekeId in prekes) {
-                // if (+inputSelect.value-1 == prekeId && !document.getElementById(`${prekes[prekeId].id}`)) {
                         if (!document.getElementById(`${prekes[+inputSelect.value-1].id}`)) {
                         let tr = addRowToTable("",
                                                 prekes[+inputSelect.value-1].id,
@@ -308,11 +297,6 @@ function createTableSelect() {
 
 
 
-function drawTableSelect() {
-        tableSelect.remove()
-        updateTableSelect()
-}
-
 function deleteSelect() {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         for (let i = 1; i < tableSelect.rows.length; i++) {
@@ -321,7 +305,6 @@ function deleteSelect() {
                         tableSelect.removeChild(tableSelect.childNodes[i])
                 }
         }
-        // drawTableSelect()
         updateTableSelect()
 }
 
@@ -341,22 +324,23 @@ function updateTableSelect() {
         selectDiv.appendChild(tableSelect)
 }
 
+
 const prekes = localStorage.getItem("prekes") == null ? localStorage.setItem("prekes",JSON.stringify([])) : JSON.parse(localStorage.getItem("prekes"))
 
 buttonInput.addEventListener("click", () => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
 
         if (id.value == '') {
-                info.textContent = "Butina ivesti prekes koda"
+                info.textContent = "Būtina įvesti prekės kodą"
         }
         else if (name.value == '') {
-                info.textContent = "Iveskite prekes pavadinima"
+                info.textContent = "Įveskite prekės pavadinimą"
         }
         else if ( quantity.value == '') {
-                info.textContent = "Iveskite prekes kieki"
+                info.textContent = "Įveskite prekės kiekį"
         }
         else if (prekes.some(el => el.id === id.value)){
-                info.textContent = "Toks prekes kodas jau yra"
+                info.textContent = "Toks prekės kodas jau yra"
         }
         else {
                 const preke = {}
@@ -374,14 +358,31 @@ buttonInput.addEventListener("click", () => {
         }
 })
 
+
 buttonEdit.addEventListener("click", () => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
-        if (name.value != '') {
-                prekes[+id.value-1].name = name.value
+        info.textContent = ''
+        if (id.value == '') {
+                info.textContent = "Būtina įvesti id."
         }
-        if (quantity.value != '') {
-               prekes[+id.value-1].quantity = quantity.value
-        }    
+        else  if (+id.value < 0 && +id.value >= prekes.length) {
+                info.textContent = "Tokio id nėra."
+        }
+        else {
+                if (name.value == '') {
+                        name.value = prekes[+id.value-1].name
+                }
+                else {
+                        prekes[+id.value-1].name = name.value
+
+                }
+                if (quantity.value == '') {
+                        quantity.value = prekes[+id.value-1].quantity
+                }
+                else {
+                        prekes[+id.value-1].quantity = quantity.value
+                }
+        }  
         localStorage.setItem("prekes",JSON.stringify(prekes))
         drawTable()
         if (tableSelect) {
@@ -389,20 +390,28 @@ buttonEdit.addEventListener("click", () => {
         }
 })
 
+
 buttonDeleteLS.addEventListener("click", () => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         tableSelect = document.getElementById("tableSelect")
-        if (tableSelect) {
-                deleteSelect()
-                prekes.splice(+id.value-1,1)
-                localStorage.setItem("prekes",JSON.stringify(prekes))
-                drawTable()        
-        }   
-        else {
-                prekes.splice(+id.value-1,1)
-                localStorage.setItem("prekes",JSON.stringify(prekes))
-                drawTable()
+        if (id.value > 0 && id.value <= prekes.length) {
+                info.textContent = ""
+                if (tableSelect) {
+                        deleteSelect()
+                        prekes.splice(+id.value-1,1)
+                        localStorage.setItem("prekes",JSON.stringify(prekes))
+                        drawTable()        
+                }   
+                else {
+                        prekes.splice(+id.value-1,1)
+                        localStorage.setItem("prekes",JSON.stringify(prekes))
+                        drawTable()
+                }
         }
+        else {
+                info.textContent = "Tokio id nėra"
+        }
+        id.value = ''
 })
 
 buttonDelete.addEventListener("click", () => {
@@ -412,7 +421,7 @@ buttonDelete.addEventListener("click", () => {
         if (table) {
                 table.remove()
         }
-        info.textContent = ""
+        info.textContent = ''
 })
 
 buttonTestTable.addEventListener("click", ()=> {
@@ -425,6 +434,8 @@ buttonTestTable.addEventListener("click", ()=> {
 
 buttonXCode.addEventListener("click", ()=> {
         id.value = ''
+        name.value = ''
+        quantity.value = ''
         id.focus()
 })
 
@@ -444,7 +455,7 @@ buttonSelect.addEventListener("click",() => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
         for (let prekeId in prekes) {
                 if (+inputSelect.value-1 == prekeId) {
-                        createTableSelect(prekeId)
+                        drawTableSelect()
                         updateTableSelect()
                 }
         }
