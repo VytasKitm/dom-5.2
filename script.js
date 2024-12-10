@@ -76,9 +76,42 @@ body.style.background = "linear-gradient(165deg, rgba(164,221,246,1) 0%, rgba(23
 body.style.backgroundRepeat = "no-repeat"
 body.style.backgroundSize = "cover"
 
-// inputForm.style.width = "100%"
-// nameForm.style.width = "100%"
-// quantityForm.style.width = "100%"
+buttonDelete.style.backgroundColor = "grey"
+buttonDelete.style.color = "white"
+buttonDelete.style.borderRadius = "5px"
+
+buttonInput.style.backgroundColor = "grey"
+buttonInput.style.color = "white"
+buttonInput.style.borderRadius = "5px"
+
+buttonEdit.style.backgroundColor = "grey"
+buttonEdit.style.color = "white"
+buttonEdit.style.borderRadius = "5px"
+
+buttonDeleteLS.style.backgroundColor = "grey"
+buttonDeleteLS.style.color = "white"
+buttonDeleteLS.style.borderRadius = "5px"
+
+buttonTestTable.style.backgroundColor = "grey"
+buttonTestTable.style.color = "white"
+buttonTestTable.style.borderRadius = "5px"
+
+buttonSelect.style.backgroundColor = "grey"
+buttonSelect.style.color = "white"
+buttonSelect.style.borderRadius = "5px"
+
+buttonXCode.style.backgroundColor = "grey"
+buttonXCode.style.color = "white"
+buttonXCode.style.borderRadius = "5px"
+
+buttonXName.style.backgroundColor = "grey"
+buttonXName.style.color = "white"
+buttonXName.style.borderRadius = "5px"
+
+buttonXQuantity.style.backgroundColor = "grey"
+buttonXQuantity.style.color = "white"
+buttonXQuantity.style.borderRadius = "5px"
+
 
 id.style.flexGrow = "1"
 name.style.flexGrow = "1"
@@ -278,7 +311,7 @@ function drawTableSelect() {
         if (!tableSelect) {
                 tableSelect = createTable()
                 tableSelect.setAttribute("id","tableSelect")
-                tableSelect.style.marginTop = "84px"
+                tableSelect.style.marginTop = "66px"
                 tableSelect.style.marginBottom = "50px"
         }   
         const prekes = JSON.parse(localStorage.getItem("prekes"))
