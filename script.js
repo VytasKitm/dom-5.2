@@ -486,11 +486,17 @@ buttonXQuantity.addEventListener("click", ()=> {
 
 buttonSelect.addEventListener("click",() => {
         const prekes = JSON.parse(localStorage.getItem("prekes"))
-        for (let prekeId in prekes) {
+        if (+inputSelect.value<1 || +inputSelect.value > prekes.length) {
+                info.textContent = "Tokio id nera."
+        }
+        else {
+                for (let prekeId in prekes) {
                 if (+inputSelect.value-1 == prekeId) {
                         drawTableSelect()
                         updateTableSelect()
+                        info.textContent = ''
                 }
+                } 
         }
         inputSelect.value = ''
         inputSelect.focus()
